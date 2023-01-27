@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
             borderRadius: BorderRadius.circular(5.0),
           ),
           elevation: 0.0,
-          primary: Colors.blue,
+          primary: Colors.red,
           onPrimary: Colors.white,
         ),
         onPressed: () {},
