@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 //stateful state
 class LoginPage extends StatefulWidget {
@@ -10,6 +12,8 @@ class LoginPage extends StatefulWidget {
 
 //state
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController _controller = TextEditingController();
+  TextEditingController _pwcontroller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -47,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: TextField(
+          controller: _controller,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             icon: Icon(Icons.email),
@@ -65,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 20.0),
         child: TextField(
+          controller: _pwcontroller,
           obscureText: true,
           decoration: InputDecoration(
             icon: Icon(Icons.lock),
@@ -93,8 +99,25 @@ class _LoginPageState extends State<LoginPage> {
           primary: Colors.red,
           onPrimary: Colors.white,
         ),
-        onPressed: () {},
+        onPressed: () {
+          fetchData();
+        },
       );
     });
+  }
+
+  //funcion para enviar datos
+  Future<void> fetchData() async {
+    final response =
+        await http.get(Uri.parse("https://jsonplaceholder.typicode.com/posts"));
+
+    if (response.statusCode == 200) {
+      // If server returns an OK response, parse the JSON
+      var data = json.decode(response.body);
+      print(data);
+    } else {
+      // If that response was not OK, throw an error
+      throw Exception('Failed to load data');
+    }
   }
 }
